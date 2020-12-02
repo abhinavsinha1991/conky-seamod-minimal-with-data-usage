@@ -1,0 +1,117 @@
+#==============================================================================
+#                               conkyrc_seamod
+# Date    : 05/02/2012
+# Author  : SeaJey
+# Version : v0.1
+# License : Distributed under the terms of GNU GPL version 2 or later
+# 
+# This version is a modification of conkyrc_lunatico wich is modification of conkyrc_orange
+# 
+# conkyrc_orange:    http://gnome-look.org/content/show.php?content=137503&forumpage=0
+# conkyrc_lunatico:  http://gnome-look.org/content/show.php?content=142884
+#==============================================================================
+
+background yes
+update_interval 1
+
+cpu_avg_samples 1
+net_avg_samples 2
+temperature_unit celsius
+
+double_buffer yes
+no_buffers yes
+text_buffer_size 2048
+
+gap_x 10
+gap_y 30
+minimum_size 300 900
+maximum_width 360
+
+own_window yes
+own_window_type desktop
+own_window_transparent yes
+own_window_argb_visual yes
+own_window_colour 000000
+own_window_argb_value 0
+own_window_hints undecorate,sticky,skip_taskbar,skip_pager,below
+
+border_inner_margin 0
+border_outer_margin 0
+alignment top_right
+
+
+draw_shades no
+draw_outline no
+draw_borders no
+draw_graph_borders no
+
+override_utf8_locale yes
+use_xft yes
+xftfont caviar dreams:size=5
+xftalpha 1
+uppercase no
+
+# Defining colors
+default_color FFFFFF
+# Shades of Gray
+color1 DDDDDD
+color2 AAAAAA
+color3 888888
+# Orange
+color4 EF5A29
+# Green
+color5 77B753
+
+# Loading lua script for drawning rings
+lua_load ./seamod_rings.lua
+lua_draw_hook_post main
+
+## System information using conky capabilities
+
+# Header with base system info
+own_window_argb_value 0
+own_window_colour 000000
+TEXT
+${font Ubuntu:size=10,weight:bold}${color1}SYSTEM ${hr 2}
+${offset 15}${font Ubuntu:size=10,weight:normal}${color4}$sysname $kernel
+${offset 15}${font Ubuntu:size=10,weight:normal}${color4}$nodename
+${offset 15}${font Ubuntu:size=10,weight:normal}${color4}Uptime: $uptime
+
+# Showing CPU Graph
+${voffset 20}
+${offset 120}${cpugraph 40,183 666666 666666}${voffset -25}
+${offset 90}${font Ubuntu:size=10,weight:bold}${color5}CPU
+
+# Showing TOP 5 CPU-consumers
+${offset 105}${font Ubuntu:size=10,weight:normal}${color4}${top name 1}${alignr}${top cpu 1}%
+${offset 105}${font Ubuntu:size=10,weight:normal}${color1}${top name 2}${alignr}${top cpu 2}%
+${offset 105}${font Ubuntu:size=10,weight:normal}${color2}${top name 3}${alignr}${top cpu 3}%
+${offset 105}${font Ubuntu:size=10,weight:normal}${color3}${top name 4}${alignr}${top cpu 4}%
+${offset 105}${font Ubuntu:size=10,weight:normal}${color3}${top name 5}${alignr}${top cpu 5}%
+
+#Showing memory part with TOP 5
+${voffset 40}
+${offset 90}${font Ubuntu:size=10,weight:bold}${color5}MEM
+${offset 105}${font Ubuntu:size=10,weight:normal}${color4}${top_mem name 1}${alignr}${top_mem mem 1}%
+${offset 105}${font Ubuntu:size=10,weight:normal}${color1}${top_mem name 2}${alignr}${top_mem mem 2}%
+${offset 105}${font Ubuntu:size=10,weight:normal}${color2}${top_mem name 3}${alignr}${top_mem mem 3}%
+${offset 105}${font Ubuntu:size=10,weight:normal}${color3}${top_mem name 4}${alignr}${top_mem mem 4}%
+${offset 105}${font Ubuntu:size=10,weight:normal}${color3}${top_mem name 4}${alignr}${top_mem mem 5}%
+
+
+
+${offset 90}${font Ubuntu:size=10,weight:bold}${color5}DISK
+${alignr}${offset 15}${font Ubuntu:size=9}${color1}/    Free: ${font Ubuntu:size=9}${fs_free /}${font Ubuntu:size=9} Used: ${font Ubuntu:size=9}${fs_used /}
+${alignr}${offset 15}${font Ubuntu:size=9}${color1}Home Free: ${font Ubuntu:size=9}${fs_free /home}${font Ubuntu:size=9} Used: ${font Ubuntu:size=9}${fs_used /home}
+
+#Showing WIFI data usage from vnstat 
+${color orange}${voffset 0}${hr 1}
+${color4}${voffset 5}Wifi Data Usage using vnStat
+
+${color1}${font Ubuntu:size=8} ${goto 10}Today ${goto 70}Yesterday ${goto 150}Month 
+
+${color green} ${font Ubuntu:size=7} ${execi 300 vnstat -i wlp5s0 | grep "today" | awk '{print $8" "substr ($9, 1, 1)}'} ${goto 70} ${execi 300 vnstat -i wlp5s0 | grep "yesterday" | awk '{print $8" "substr ($9, 1, 1)}'} ${goto 150} ${execi 300 vnstat -i wlp5s0 -m | grep "`date +"%y-%m"`" | awk '{print $2 $3}'}
+
+    
+${color orange}${voffset -20}${hr 1}
+
